@@ -1,5 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
+import _ from "lodash"
 
 const margin = { top: 20, right: 30, bottom: 30, left: 60 },
   width = 460 - margin.left - margin.right,
@@ -15,14 +16,14 @@ const svg = d3
   .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
 // Parse the Data
-// d3.csv(
-//   'https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/5_OneCatSevNumOrdered_wide.csv'
-// ).then(function (data) {
-//   // List of groups = header of the csv files
-//   const keys = data.columns.slice(1);
-d3.json('http://localhost:3000/frequencies').then(function (data) {
-  console.log(data);
-  console.log(data.length);
+d3.csv(
+  'https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/5_OneCatSevNumOrdered_wide.csv'
+).then(function (data) {
+  //   // List of groups = header of the csv files
+  //   const keys = data.columns.slice(1);
+  // d3.json('http://localhost:3000/frequencies').then(function (data) {
+  //   console.log(data);
+  //   console.log(data.length);
 
   // List of groups = header of the csv files
   const keys = data.length;

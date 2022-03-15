@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import _ from 'lodash'
 
-export let bitArray = [];
 //
 // --- Spectrogram ---
 //
@@ -395,14 +395,33 @@ var Waterfall = function (options) {
     window.requestAnimationFrame(draw);
     var frequencies = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(frequencies);
-    bitArray.push(frequencies);
-    // console.log(bitArray);
 
+    // console.log(frequencies)
     // const res = axios
-    //   .post('http://localhost:3000/frequencies', bitArray)
+    //   .post('http://localhost:3000/frequencies', frequencies)
     //   .then(response => {
     //     console.log(response.data);
     //   });
+    // useEffect(() => {
+    //   const bitArray = []
+    //   const res = axios.get('http://localhost:3000/frequencies')
+    //     .then(response => {
+    //       setFreqs(response.data[1].freqs)
+    //     });
+    //   return res.data
+    // }, [])
+
+    const article = {
+      id: Date.now(),
+      freqs: frequencies
+    }
+
+
+    const res = axios.post('http://localhost:8000/frequencies', article)
+      .then(response => {
+        console.log(response.data)
+      })
+
     canvasContext.drawImage(
       canvasContext.canvas,
       0,
@@ -420,6 +439,7 @@ var Waterfall = function (options) {
       canvasContext.fillStyle = '#' + heatmap[mag]; //"rgba(0,"+mag+",0,1)";
       canvasContext.fillRect(i, moveBy, 1, moveBy);
     }
+    return res.data
   };
 
   var sequence = function (seq) {
