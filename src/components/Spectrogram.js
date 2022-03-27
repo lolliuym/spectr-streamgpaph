@@ -395,32 +395,73 @@ var Waterfall = function (options) {
     window.requestAnimationFrame(draw);
     var frequencies = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(frequencies);
-
     // console.log(frequencies)
+
+    // let bitArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    // let size = 3
+    // let subarray = []
+    // // for (let i = 0; i < Math.ceil(frequencies.length / size); i++) {
+    // //   subarray[i] = frequencies.slice((i * size), (i * size) + size)
+    // // }
+    // while (bitArray.length) subarray.push(bitArray.splice(0, size))
+    // console.log(subarray)
+
+
+
     // const res = axios
     //   .post('http://localhost:3000/frequencies', frequencies)
     //   .then(response => {
     //     console.log(response.data);
     //   });
-    // useEffect(() => {
-    //   const bitArray = []
-    //   const res = axios.get('http://localhost:3000/frequencies')
-    //     .then(response => {
-    //       setFreqs(response.data[1].freqs)
-    //     });
-    //   return res.data
-    // }, [])
+    let byId = 0
 
+    // const bitArray = []
+    // const res = axios.get('http://localhost:3000/frequencies')
+    //   .then(response => {
+    //     byId = response.data.slice(-1).id
+    //   });
+
+
+
+
+    let distribution = {
+      "Amanda": '', "Ashley": '', "Betty": '', "Deborah": '', "Dorothy": '', "Helen": '', "Linda": '', "Patricia": '', "Abraham": '', "Gitaby": ''
+    };
+    var chunks = []
+    var freqs = []
+    function chunkAverage(arr, len) {
+      var i = 0;
+      var n = arr.length;
+      var chunk;
+      while (i < n) {
+        chunk = arr.slice(i, i += len);
+        chunks.push(
+          Math.ceil(chunk.reduce((s, n) => s + n) / chunk.length))
+
+      }
+      return chunks;
+    };
+    distribution["Amanda"] = chunks[0]
+    distribution["Ashley"] = chunks[1]
+    distribution["Betty"] = chunks[2]
+    distribution["Deborah"] = chunks[3]
+    distribution["Dorothy"] = chunks[4]
+    distribution["Helen"] = chunks[5]
+    distribution["Linda"] = chunks[6]
+    distribution["Patricia"] = chunks[7]
+    distribution["Abraham"] = chunks[8]
+    distribution["Gitaby"] = chunks[9]
+    chunkAverage(frequencies, 103)
     const article = {
-      id: Date.now(),
-      freqs: frequencies
+      id: byId,
+      freqs: chunks
     }
+    // const req = axios.post('http://localhost:8000/frequencies', article)
+    //   .then(response => {
+    //     console.log(response.data)
+    //   })
 
-
-    const res = axios.post('http://localhost:8000/frequencies', article)
-      .then(response => {
-        console.log(response.data)
-      })
 
     canvasContext.drawImage(
       canvasContext.canvas,
@@ -439,7 +480,7 @@ var Waterfall = function (options) {
       canvasContext.fillStyle = '#' + heatmap[mag]; //"rgba(0,"+mag+",0,1)";
       canvasContext.fillRect(i, moveBy, 1, moveBy);
     }
-    return res.data
+    // return res.data
   };
 
   var sequence = function (seq) {
@@ -477,10 +518,26 @@ var Waterfall = function (options) {
 };
 
 const Spectrogram = () => {
+  const [active, setActive] = useState(true)
+
+  const play = () => {
+    setActive(true)
+  }
+  const stop = () => {
+    setActive(false)
+
+  }
+
   return (
-    <div id='waterfall' className='waterfall '>
+    <div>
       <h2>Spectrogram</h2>
+      <button onClick={play}>Start</button>
+      <button onClick={stop}>Stop</button>
+      <div id='waterfall' className={`waterfall ${active ? 'block ' : 'hidden'}`}>
+
+      </div>
     </div>
+
   );
 };
 

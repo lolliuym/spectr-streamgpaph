@@ -1,16 +1,15 @@
 .waterfall {
-  display: inline-block;
   padding: 5px;
-    width: 43%; 
+  width: 43%;
 }
 .waterfall canvas {
-   width: 100%; 
+  width: 100%;
   transform: rotate(90deg);
-} 
+}
 .streamgraph {
   padding: 5px;
   display: inline-block;
-  width: 56%;
+  width: 100%;
 }
 .streamgraph svg {
   width: 100%;
